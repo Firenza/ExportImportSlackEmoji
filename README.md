@@ -16,4 +16,4 @@ This is python script that exports emoji from one slack organization and imports
 1. Copy the `Token` form data value into the `destinationSlackOrgToken` variable value in the script
 1. Run the script :)
 
-The script will not download emoji you have already downloaded and will not try upload emoji you have already uploaded so you can safely have this run on a schedule for as long as your tokens are valid.
+The script will not download emoji you have already downloaded and will not try upload emoji you have already uploaded so if you run into a rate limiting error just wait a while and start the script again and you can slowly get them all transfered.
