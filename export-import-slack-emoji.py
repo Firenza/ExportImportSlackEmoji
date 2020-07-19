@@ -96,19 +96,11 @@ for emojiFileName in existingEmojiFileNames:
         print(f'Uploaded {emojiFileName}')
     elif not responseJson["ok"] and responseJson["error"] == "error_name_taken":
         print(f'Emoji with a name of {emojiFileNameWithoutExtension} already exits')
-    # elif not responseJson["ok"] and responseJson["error"] == "ratelimited":
-    #     retryAfter = response.headers['retry-after']
-
-    #     print(f'Exceeded rate limit, waiting {retryAfter} seconds before retrying')
-
-    #     time.sleep(int(retryAfter))
-
-    #     response = requests.request("POST", url, headers=destinationSlackOrgHeaders, data = payload, files = files)
-
     else:
         print(f'Unexpected falure! {responseJson["error"]}')
         print(response)
         print(response.headers)
 
+    # Wait 5 seconds before the next call so there is no posibility of getting rate limited.  
     time.sleep(5)
 
