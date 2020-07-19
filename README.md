@@ -1,5 +1,7 @@
 This is python script that exports emoji from one slack organization and imports then into another via the Slack API. Because the Slack API does not allow you to use a non bot/app user token, you have to get some information from your broswer to the script can emulate broswer Slack API calls.
 
+### NOTE: This script will only work if you have access in the slack web ui to see the custom emoji page for your org
+
 ### Running Instructions
 
 1. Open a broswer window and open your dev tools network tab
