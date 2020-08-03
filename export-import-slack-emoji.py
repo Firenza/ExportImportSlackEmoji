@@ -79,28 +79,36 @@ for emojiFileName in existingEmojiFileNames:
         print(f'Emoji with a name of {emojiFileNameWithoutExtension} already exits in destination, skpping upload')
         continue
 
-    payload = {
-        'mode': 'data',
-        'name': emojiFileNameWithoutExtension
-    }
+    emojiUploaded = False
 
-    files = [
-        ('image', open(f'slackEmoji/{emojiFileName}','rb'))
-    ]
+    while (not emojiUploaded):
 
-    response = requests.request("POST", url, headers=destinationSlackOrgHeaders, data = payload, files = files)
+        payload = {
+            'mode': 'data',
+            'name': emojiFileNameWithoutExtension
+        }
 
-    responseJson = json.loads(response.content)
+        files = [
+            ('image', open(f'slackEmoji/{emojiFileName}','rb'))
+        ]
 
-    if responseJson["ok"]:
-        print(f'Uploaded {emojiFileName}')
-    elif not responseJson["ok"] and responseJson["error"] == "error_name_taken":
-        print(f'Emoji with a name of {emojiFileNameWithoutExtension} already exits')
-    else:
-        print(f'Unexpected falure! {responseJson["error"]}')
-        print(response)
-        print(response.headers)
+        response = requests.request("POST", url, headers=destinationSlackOrgHeaders, data = payload, files = files)
 
-    # Wait 5 seconds before the next call so there is no posibility of getting rate limited.  
-    time.sleep(5)
+        responseJson = json.loads(response.content)
 
+        if responseJson["ok"]:
+            print(f'Uploaded {emojiFileName}')
+            emojiUploaded = True
+        elif not responseJson["ok"] and responseJson["error"] == "error_name_taken":
+            print(f'Emoji with a name of {emojiFileNameWithoutExtension} already exits')
+            emojiUploaded = True
+        elif not responseJson["ok"] and responseJson["error"] == "ratelimited":
+            retryAfter = response.headers['retry-after']
+            retryAfterInt = int(retryAfter) + 1
+            print(f'Exceeded rate limit, waiting {retryAfterInt} seconds before retrying')
+            time.sleep(retryAfterInt)
+        else:
+            print(f'Unexpected falure! {responseJson["error"]}')
+            print(response)
+            print(response.headers)
+            break
