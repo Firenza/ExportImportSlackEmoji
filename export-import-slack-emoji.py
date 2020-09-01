@@ -76,7 +76,7 @@ for emojiFileName in existingEmojiFileNames:
     emojiFileNameWithoutExtension = emojiFileExtension = re.search('([^\.]+)\.', emojiFileName).group(1)
 
     if emojiFileNameWithoutExtension in destinationEmojiNameToUrlDict:
-        print(f'Emoji with a name of {emojiFileNameWithoutExtension} already exits in destination, skpping upload')
+        print(f'Emoji with a name of {emojiFileNameWithoutExtension} already exits in destination, skipping upload')
         continue
 
     emojiUploaded = False
@@ -108,7 +108,7 @@ for emojiFileName in existingEmojiFileNames:
             print(f'Exceeded rate limit, waiting {retryAfterInt} seconds before retrying')
             time.sleep(retryAfterInt)
         else:
-            print(f'Unexpected falure! {responseJson["error"]}')
+            print(f'Unexpected failure! {responseJson["error"]}')
             print(response)
             print(response.headers)
             break
