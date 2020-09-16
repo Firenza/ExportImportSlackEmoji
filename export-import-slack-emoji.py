@@ -3,6 +3,7 @@ import json
 import re
 import os
 import time
+import re
 from os import walk
 
 # --------------------------------------
@@ -56,7 +57,9 @@ for emojiName in emojiNameToUrlDict:
         response = requests.get(emojiUrl)
 
         # Write the resposne to a file
+        invalidFileNameCharatersRegex = ':|;'
         emojiFileName = f'{emojiDownloadFolder}/{emojiName}{emojiFileExtension}'
+        emojiFileName = re.sub(invalidFileNameCharatersRegex, '_', emojiFileName)
         open(emojiFileName, 'wb').write(response.content)
 
         print(f'Saved {emojiFileName}')
